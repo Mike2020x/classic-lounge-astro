@@ -1,0 +1,118 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import MenuCard from '../components/MenuCard.astro';
+import { business } from '../data/business';
+import { menu } from '../data/menu';
+
+const featured = menu.filter((item) => item.featured);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CafeOrCoffeeShop',
+  name: business.name,
+  description: business.description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address,
+    addressCountry: 'CO'
+  },
+  telephone: business.phone,
+  sameAs: [business.instagram]
+};
+---
+<Layout title={`${business.name} | Café, desayunos y postres`} description={business.description}>
+  <Header />
+  <main id="contenido">
+    <Hero />
+
+    <section class="section intro" aria-labelledby="intro-title">
+      <div class="container narrow center">
+        <p class="eyebrow eyebrow-dark">UNA PAUSA QUE SABE BIEN</p>
+        <h2 id="intro-title">Tu lugar para <span>desconectar</span> y disfrutar.</h2>
+        <p>Desde un café para comenzar la mañana hasta una torta para cerrar la tarde: queremos que cada visita se sienta especial.</p>
+      </div>
+      <div class="container feature-grid" id="experiencia">
+        <FeatureCard icon="☕" title="Café de calidad" text="Preparaciones calientes y frías pensadas para acompañar tus mejores conversaciones." />
+        <FeatureCard icon="◈" title="Desayunos especiales" text="Waffles, opciones tradicionales y propuestas para empezar el día con algo diferente." />
+        <FeatureCard icon="◇" title="Postres deliciosos" text="Tortas y antojos dulces para acompañar tu café o darte un gusto." />
+      </div>
+    </section>
+
+    <section class="section menu-section" id="carta" aria-labelledby="menu-title">
+      <div class="container section-heading">
+        <div>
+          <p class="eyebrow">PARA DISFRUTAR HOY</p>
+          <h2 id="menu-title">Nuestros favoritos</h2>
+        </div>
+        <p>La carta completa y los precios pueden incorporarse aquí cuando estén definidos.</p>
+      </div>
+      <div class="container menu-grid">
+        {featured.map((item) => <MenuCard item={item} />)}
+      </div>
+      <div class="container center action-row">
+        <a class="button button-dark" href={`https://wa.me/${business.whatsapp}?text=Hola%20Classic%20Lounge,%20quiero%20conocer%20la%20carta.`} target="_blank" rel="noopener noreferrer">Consultar carta por WhatsApp</a>
+      </div>
+    </section>
+
+    <section class="section story" id="nosotros" aria-labelledby="story-title">
+      <div class="container story-grid">
+        <div class="story-image">
+          <img src={`${import.meta.env.BASE_URL}images/classic-lounge-poster.png`} alt="Ambiente de Classic Lounge con café, waffle de frutas y porción de torta" loading="lazy" />
+        </div>
+        <div class="story-copy">
+          <p class="eyebrow eyebrow-dark">CLASSIC LOUNGE</p>
+          <h2 id="story-title">Un espacio hecho para quedarse un rato más.</h2>
+          <p>Queremos ser ese lugar al que vienes por un café y terminas quedándote por la conversación, el ambiente y algo rico en la mesa.</p>
+          <p>La identidad mezcla calidez, detalles artesanales y una experiencia cercana, sin perder el carácter moderno de un café de barrio con personalidad.</p>
+          <a class="text-link" href={business.maps} target="_blank" rel="noopener noreferrer">Visítanos en La Pradera →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="location" id="ubicacion" aria-labelledby="location-title">
+      <div class="container location-card">
+        <div>
+          <p class="eyebrow">TE ESPERAMOS</p>
+          <h2 id="location-title">Nos vemos en La Pradera.</h2>
+          <address>{business.address}<br />Colombia</address>
+          <div class="hours" aria-label="Horarios">
+            {business.hours.map((row) => <p><strong>{row.days}</strong><span>{row.hours}</span></p>)}
+          </div>
+        </div>
+        <div class="map-placeholder" aria-label="Mapa de ubicación de Classic Lounge">
+          <div class="map-pin">⌖</div>
+          <p>Classic Lounge</p>
+          <a href={business.maps} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-brand"><span class="brand-mark" aria-hidden="true">☕</span><span><strong>Classic</strong><small>LOUNGE</small></span></div>
+        <p>{business.tagline}.</p>
+      </div>
+      <div>
+        <h2 class="footer-title">Contacto</h2>
+        <a href={`tel:${business.phone.replaceAll(' ', '')}`}>{business.phone}</a>
+        <a href={`https://wa.me/${business.whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a href={business.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+      </div>
+      <div>
+        <h2 class="footer-title">Visítanos</h2>
+        <p>{business.address}</p>
+        <a href={business.maps} target="_blank" rel="noopener noreferrer">Cómo llegar →</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© {new Date().getFullYear()} {business.name}</span>
+      <span>Hecho para crecer contigo.</span>
+    </div>
+  </footer>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Layout>

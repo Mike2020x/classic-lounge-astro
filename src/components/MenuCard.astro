@@ -1,0 +1,17 @@
+---
+import type { MenuItem } from '../data/menu';
+interface Props { item: MenuItem; }
+const { item } = Astro.props;
+const price = typeof item.price === 'number'
+  ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.price)
+  : 'Precio próximamente';
+---
+<article class="menu-card">
+  <div class="menu-card-top">
+    <span class="menu-category">{item.category}</span>
+    {item.featured && <span class="featured">Favorito</span>}
+  </div>
+  <h3>{item.name}</h3>
+  <p>{item.description}</p>
+  <div class="menu-price">{price}</div>
+</article>

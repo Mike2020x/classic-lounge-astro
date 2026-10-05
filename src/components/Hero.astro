@@ -1,0 +1,17 @@
+---
+import { business } from '../data/business';
+---
+<section id="inicio" class="hero" aria-labelledby="hero-title">
+  <div class="hero-media" style={`--hero-image: url("${import.meta.env.BASE_URL}images/classic-lounge-poster.png")`} role="img" aria-label="Café, waffle con frutas y torta de chocolate en Classic Lounge"></div>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <p class="eyebrow">CAFÉ · DESAYUNOS · POSTRES · MOMENTOS ESPECIALES</p>
+    <h1 id="hero-title">El mejor <em>café</em> y desayunos para empezar tu día.</h1>
+    <p class="hero-copy">Un rincón acogedor para conversar, compartir y disfrutar algo delicioso en La Pradera.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="#carta">Ver carta</a>
+      <a class="button button-secondary" href={business.maps} target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+    </div>
+    <div class="hero-note" aria-label="Ubicación">⌖ {business.address}</div>
+  </div>
+</section>
