@@ -11,7 +11,7 @@ export const business = {
   instagram: 'https://instagram.com/',
   maps: 'https://www.google.com/maps/search/?api=1&query=Cra.+17+%2321-17+La+Pradera',
   hours: [
-    { days: 'Lunes a sábado', hours: '7:00 a. m. – 9:00 p. m.' },
-    { days: 'Domingo', hours: '8:00 a. m. – 6:00 p. m.' }
+    { days: 'Lunes a sábado', hours: '8:00 a. m. – 3:00 p. m.' },
+    { days: 'Domingo', hours: 'Cerrado' }
   ]
 } as const;

@@ -4,14 +4,22 @@ interface Props { item: MenuItem; }
 const { item } = Astro.props;
 const price = typeof item.price === 'number'
   ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.price)
-  : 'Precio próximamente';
+  : 'Consultar precio';
+const base = import.meta.env.BASE_URL;
 ---
-<article class="menu-card">
-  <div class="menu-card-top">
-    <span class="menu-category">{item.category}</span>
-    {item.featured && <span class="featured">Favorito</span>}
+<article class="dish-card">
+  {item.image && (
+    <div class="dish-media">
+      <img src={`${base}${item.image}`} alt={item.name} loading="lazy" />
+      {item.tag && <span class="dish-tag">{item.tag}</span>}
+    </div>
+  )}
+  <div class="dish-body">
+    <div class="dish-row">
+      <h3>{item.name}</h3>
+      <span class="dish-price">{price}</span>
+    </div>
+    <p>{item.description}</p>
+    {!item.image && item.tag && <span class="dish-tag dish-tag-inline">{item.tag}</span>}
   </div>
-  <h3>{item.name}</h3>
-  <p>{item.description}</p>
-  <div class="menu-price">{price}</div>
 </article>

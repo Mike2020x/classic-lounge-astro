@@ -5,9 +5,14 @@ import Hero from '../components/Hero.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import MenuCard from '../components/MenuCard.astro';
 import { business } from '../data/business';
-import { menu } from '../data/menu';
+import { menu, menuOrder, categoryMeta } from '../data/menu';
 
-const featured = menu.filter((item) => item.featured);
+const featured = menu.filter((item) => item.featured && item.image);
+const fullMenu = menuOrder.map((category) => ({
+  category,
+  ...categoryMeta[category],
+  items: menu.filter((item) => item.category === category)
+}));
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CafeOrCoffeeShop',
@@ -43,16 +48,49 @@ const jsonLd = {
     <section class="section menu-section" id="carta" aria-labelledby="menu-title">
       <div class="container section-heading">
         <div>
-          <p class="eyebrow">PARA DISFRUTAR HOY</p>
-          <h2 id="menu-title">Nuestros favoritos</h2>
+          <p class="eyebrow">NUESTRA CARTA · PRECIOS EN PESOS</p>
+          <h2 id="menu-title">Lo que sale de nuestra cocina</h2>
         </div>
-        <p>La carta completa y los precios pueden incorporarse aquí cuando estén definidos.</p>
+        <p>Fotos reales de nuestros platos. Todo se prepara al momento: waffles de pandebono o queso, desayunos completos y hojaldres recién horneados.</p>
       </div>
-      <div class="container menu-grid">
+
+      <div class="container dish-grid">
         {featured.map((item) => <MenuCard item={item} />)}
       </div>
+
+      <div class="container carta-full">
+        {fullMenu.map((group) => (
+          <section class="carta-group" aria-label={group.category}>
+            <header class="carta-group-head">
+              <span class="carta-icon" aria-hidden="true">{group.icon}</span>
+              <div>
+                <h3>{group.category}</h3>
+                <p>{group.blurb}</p>
+              </div>
+            </header>
+            <ul class="carta-list">
+              {group.items.map((item) => (
+                <li class="carta-item">
+                  <div class="carta-item-top">
+                    <strong>{item.name}</strong>
+                    <span class="dots" aria-hidden="true"></span>
+                    <span class="carta-price">
+                      {typeof item.price === 'number'
+                        ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.price)
+                        : 'Consultar'}
+                    </span>
+                  </div>
+                  <p>{item.description}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+
       <div class="container center action-row">
-        <a class="button button-dark" href={`https://wa.me/${business.whatsapp}?text=Hola%20Classic%20Lounge,%20quiero%20conocer%20la%20carta.`} target="_blank" rel="noopener noreferrer">Consultar carta por WhatsApp</a>
+        <p class="carta-note">¿Antojo de algo? Escríbenos y te lo preparamos.</p>
+        <a class="button button-dark" href={`https://wa.me/${business.whatsapp}?text=Hola%20Classic%20Lounge,%20quiero%20pedir%20algo%20rico.`} target="_blank" rel="noopener noreferrer">Pedir por WhatsApp</a>
       </div>
     </section>
 
